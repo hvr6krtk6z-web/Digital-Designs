@@ -152,6 +152,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			booking_admin_redirect($route, 'Date exception saved.');
 			}
 
+			if ($route === '/admin/calendar' && in_array($action, ['google_save', 'google_test', 'google_sync', 'google_disconnect'], true)) {
+				if ($action === 'google_disconnect') {
+					gcal_disconnect($db);
+					booking_admin_redirect($route, 'Google Calendar disconnected.');
+				}
+				if ($action === 'google_save') {
+					$calendarId = trim((string) ($_POST['calendar_id'] ?? ''));
+					$keyJson = trim((string) ($_POST['service_account_json'] ?? ''));
+					if ($calendarId === '' || strlen($calendarId) > 254 || preg_match('/[\s\x00-\x1f]/', $calendarId)) throw new BookingError('Enter the Google Calendar ID.');
+					if ($keyJson !== '') {
+						$decoded = json_decode($keyJson, true);
+						$email = is_array($decoded) ? (string) ($decoded['client_email'] ?? '') : '';
+						$pem = is_array($decoded) ? (string) ($decoded['private_key'] ?? '') : '';
+						if (strlen($keyJson) > 20000 || !filter_var($email, FILTER_VALIDATE_EMAIL) || !openssl_pkey_get_private($pem)) throw new BookingError('That is not a valid Google service account JSON key.');
+						gcal_set($db, 'google_sa_email', $email);
+						gcal_set($db, 'google_sa_key', $pem);
+						gcal_set($db, 'google_token', '');
+						gcal_set($db, 'google_token_expires', '0');
+					} elseif (($settings['google_sa_key'] ?? '') === '') {
+						throw new BookingError('Paste the service account JSON key.');
+					}
+					gcal_set($db, 'google_calendar_id', $calendarId);
+					gcal_set($db, 'google_sync_enabled', isset($_POST['sync_enabled']) ? '1' : '0');
+					booking_admin_redirect($route, 'Google Calendar settings saved.');
+				}
+				if (!gcal_configured($settings)) throw new BookingError('Save the calendar settings and turn sync on first.');
+				if ($action === 'google_test') {
+					booking_admin_redirect($route, gcal_test($db, $settings));
+				}
+				[$total, $failed] = gcal_sync_pending($db);
+				booking_admin_redirect($route, $total === 0 ? 'Everything is already in sync.' : ($failed === 0 ? 'Synced ' . $total . ' appointment(s).' : 'Synced ' . ($total - $failed) . ' of ' . $total . ' appointments. ' . $failed . ' failed; check the messages below.'));
+			}
+
 			if ($route === '/admin/bookings' && in_array($action, ['status', 'reschedule'], true)) {
 				booking_admin_update($db, $_POST, $settings);
 				$backDate = (string) ($_POST['return_date'] ?? '');
@@ -170,11 +203,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $pageTitle = match ($route) {
 	'/admin/bookings' => 'Appointments',
 	'/admin/services' => 'Services',
+	'/admin/calendar' => 'Google Calendar',
 	default => 'Availability',
 };
 $baseUrl = match ($route) {
 	'/admin/bookings' => '/admin/bookings',
 	'/admin/services' => '/admin/services',
+	'/admin/calendar' => '/admin/calendar',
 	default => '/admin/availability',
 };
 $timezones = ['UTC', 'Europe/London', 'Europe/Dublin', 'Europe/Paris', 'Europe/Berlin', 'Europe/Amsterdam', 'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles', 'America/Toronto', 'America/Vancouver', 'Australia/Sydney', 'Pacific/Auckland'];
@@ -196,7 +231,7 @@ $csrfJson = json_encode($csrf, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSO
 		<a class="admin-brand" href="/" target="_blank" rel="noreferrer"><?= branding_mark($settings, 'admin-mark') ?><span>Fieldnote Booking <small>Booking admin</small></span></a>
 		<div class="admin-account"><span><?= h((string) $_SESSION['admin_username']) ?></span><form method="post" action="/admin"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><button class="text-button" name="action" value="logout">Sign out</button></form></div>
 	</header>
-	<nav class="admin-nav" aria-label="Admin sections"><a href="/admin" >SEO manager</a><a href="/admin/bookings" <?= $route === '/admin/bookings' ? 'aria-current="page"' : '' ?>>Appointments</a><a href="/admin/availability" <?= $route === '/admin/availability' ? 'aria-current="page"' : '' ?>>Availability</a><a href="/admin/services" <?= $route === '/admin/services' ? 'aria-current="page"' : '' ?>>Services</a><a href="/admin/pages" <?= $route === '/admin/pages' ? 'aria-current="page"' : '' ?>>Page editor</a></nav>
+	<nav class="admin-nav" aria-label="Admin sections"><a href="/admin" >SEO manager</a><a href="/admin/bookings" <?= $route === '/admin/bookings' ? 'aria-current="page"' : '' ?>>Appointments</a><a href="/admin/availability" <?= $route === '/admin/availability' ? 'aria-current="page"' : '' ?>>Availability</a><a href="/admin/services" <?= $route === '/admin/services' ? 'aria-current="page"' : '' ?>>Services</a><a href="/admin/calendar" <?= $route === '/admin/calendar' ? 'aria-current="page"' : '' ?>>Google Calendar</a><a href="/admin/pages" <?= $route === '/admin/pages' ? 'aria-current="page"' : '' ?>>Page editor</a></nav>
 	<main class="admin-main booking-admin-main">
 		<div class="dashboard-heading"><div><p class="eyebrow">Fieldnote Booking</p><h1><?= h($pageTitle) ?></h1><p class="muted">Signed in as <?= h((string) $_SESSION['admin_username']) ?></p></div><?php if ($route === '/admin/bookings'): ?><a class="outline-button" href="/book" target="_blank" rel="noreferrer">Open booking page <span aria-hidden="true">↗</span></a><?php endif; ?></div>
 		<?php if ($notice): ?><div class="success" role="status"><?= h($notice) ?></div><?php endif; ?>
@@ -232,6 +267,29 @@ $csrfJson = json_encode($csrf, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSO
 			<section class="admin-panel"><div class="admin-section-heading"><div><h2>Date exceptions</h2><p>Close a date or replace its regular opening hours.</p></div></div><form method="post" class="form-grid exception-form"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><input type="hidden" name="action" value="save_exception"><label class="field">Date<input type="date" name="local_date" min="<?= (new DateTimeImmutable('today', $timezone))->format('Y-m-d') ?>" required></label><label class="field">Reason <span class="optional">Optional</span><input name="note" maxlength="120"></label><label class="field">Open<input type="time" name="start_time" value="10:00"></label><label class="field">Close<input type="time" name="end_time" value="15:00"></label><label class="day-check exception-check"><input type="checkbox" name="is_closed" value="1" checked><span>Closed all day</span></label><div class="form-actions"><span class="save-note">Existing confirmed appointments must be moved or cancelled first.</span><button class="primary-button" type="submit">Save exception</button></div></form>
 				<?php $exceptions = $db->query('SELECT local_date, is_closed, start_time, end_time, note FROM booking_dates WHERE local_date >= date("now") ORDER BY local_date LIMIT 100')->fetchAll(PDO::FETCH_ASSOC); ?>
 				<?php if ($exceptions): ?><div class="exception-list"><?php foreach ($exceptions as $exception): ?><div class="exception-row"><span><strong><?= h($exception['local_date']) ?></strong><small><?= h($exception['note']) ?></small></span><span><?= (int) $exception['is_closed'] ? 'Closed' : h($exception['start_time'] . '–' . $exception['end_time']) ?></span><form method="post"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><input type="hidden" name="action" value="delete_exception"><input type="hidden" name="local_date" value="<?= h($exception['local_date']) ?>"><button class="text-action" type="submit">Remove</button></form></div><?php endforeach; ?></div><?php else: ?><p class="empty-admin">No upcoming date exceptions.</p><?php endif; ?></section>
+		<?php elseif ($route === '/admin/calendar'): ?>
+			<?php
+			$gcalReady = gcal_configured($settings);
+			$gcalFailed = $db->query('SELECT reference, google_sync_error FROM bookings WHERE google_sync_error <> "" ORDER BY updated_at DESC LIMIT 10')->fetchAll(PDO::FETCH_ASSOC);
+			?>
+			<section class="admin-panel"><div class="admin-section-heading"><div><h2>Google Calendar sync</h2><p>New, rescheduled and cancelled appointments are pushed to one Google Calendar. Guests are not invited and the sync is one-way.</p></div></div>
+				<p class="muted">Status: <strong><?= $gcalReady ? 'On' : (($settings['google_sa_key'] ?? '') !== '' ? 'Saved, sync off' : 'Not connected') ?></strong><?php if (($settings['google_sa_email'] ?? '') !== ''): ?> · Service account: <?= h($settings['google_sa_email']) ?><?php endif; ?></p>
+				<form method="post" class="form-grid"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><input type="hidden" name="action" value="google_save">
+					<label class="field full">Calendar ID<input name="calendar_id" value="<?= h($settings['google_calendar_id'] ?? '') ?>" maxlength="254" placeholder="you@gmail.com or abc123@group.calendar.google.com" required></label>
+					<label class="field full">Service account JSON key<textarea name="service_account_json" rows="6" spellcheck="false" autocomplete="off" placeholder="<?= ($settings['google_sa_key'] ?? '') !== '' ? 'A key is saved. Paste a new one only to replace it.' : 'Paste the full contents of the downloaded JSON key file' ?>"></textarea></label>
+					<label class="field full"><span><input type="checkbox" name="sync_enabled" value="1" <?= ($settings['google_sync_enabled'] ?? '0') === '1' ? 'checked' : '' ?>> Sync appointments to Google Calendar</span></label>
+					<div class="form-actions"><span class="save-note">The key is stored in the private storage database and is never shown again.</span><button class="primary-button" type="submit">Save</button></div>
+				</form>
+				<?php if ($gcalReady): ?><div class="form-actions"><form method="post"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><button class="outline-button" name="action" value="google_test">Test connection</button> <button class="outline-button" name="action" value="google_sync">Sync upcoming appointments</button></form></div><?php endif; ?>
+				<?php if (($settings['google_sa_key'] ?? '') !== ''): ?><form method="post" onsubmit="return confirm('Disconnect Google Calendar? Existing calendar events are kept.');"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><button class="text-button" name="action" value="google_disconnect">Disconnect</button></form><?php endif; ?>
+			</section>
+			<?php if ($gcalFailed): ?><section class="admin-panel"><h2>Sync problems</h2><?php foreach ($gcalFailed as $failure): ?><p><strong><?= h($failure['reference']) ?></strong>: <?= h($failure['google_sync_error']) ?></p><?php endforeach; ?></section><?php endif; ?>
+			<section class="admin-panel"><h2>Set up</h2><ol>
+				<li>In <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, create a project and enable the <strong>Google Calendar API</strong>.</li>
+				<li>Create a <strong>service account</strong>, then add a <strong>JSON key</strong> and download it.</li>
+				<li>In Google Calendar, open the calendar's settings, choose <strong>Share with specific people</strong>, add the service account's email, and give it <strong>Make changes to events</strong>.</li>
+				<li>Copy the calendar ID from the calendar's settings (under Integrate calendar) and paste it above with the key.</li>
+			</ol></section>
 		<?php else: ?>
 			<?php
 			$monthInput = (string) ($_GET['month'] ?? (new DateTimeImmutable('now', $timezone))->format('Y-m'));

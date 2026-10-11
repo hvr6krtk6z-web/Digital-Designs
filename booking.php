@@ -265,6 +265,7 @@ function booking_create_public(PDO $db, array $payload, array $settings): array
 		$event = $db->prepare('INSERT INTO booking_events (booking_id, actor, action, details, created_at) VALUES (:booking_id, "guest", "created", :details, :created)');
 		$event->execute(['booking_id' => $bookingId, 'details' => $reference, 'created' => $created]);
 		$db->exec('COMMIT');
+		gcal_sync_booking($db, $bookingId);
 		return ['reference' => $reference, 'message' => 'Your appointment is confirmed.', 'date' => $date, 'time' => $slot['label'], 'timezone' => $timezone, 'service' => $service['name'], 'starts_at' => $slot['starts_at'], 'ends_at' => $slot['ends_at']];
 	} catch (Throwable $error) {
 		$db->exec('ROLLBACK');
@@ -426,4 +427,5 @@ function booking_admin_update(PDO $db, array $payload, array $settings): void
 		}
 		throw new BookingError('The appointment could not be updated.', 500);
 	}
+	gcal_sync_booking($db, (int) $id);
 }

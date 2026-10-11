@@ -158,6 +158,7 @@ $csrf = csrf_token();
 		<a href="/admin/bookings">Appointments</a>
 		<a href="/admin/availability">Availability</a>
 		<a href="/admin/services">Services</a>
+		<a href="/admin/calendar">Google Calendar</a>
 		<a href="/admin/pages">Page editor</a>
 	</nav>
 	<?php endif; ?>

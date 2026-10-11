@@ -13,7 +13,7 @@ A responsive creative studio website with a real appointment calendar and a pass
 - Separate logo and favicon uploads, plus a SEO manager with generated `robots.txt` and `sitemap.xml`
 - Double-booking prevention, booking rate limiting, a honeypot field, CSRF protection, secure session cookies, password hashing, and login throttling
 
-Booking does not send email, take payments, or sync with Google Calendar or Outlook.
+Optional one-way Google Calendar sync pushes appointments to a calendar of your choice. Booking does not send email, take payments, or sync with Outlook.
 
 ## Requirements
 
@@ -49,6 +49,7 @@ The setup token is deleted after the account is created. The default SQLite data
 - `/admin/availability`: hours, exceptions, notice, window, and slot interval
 - `/admin/services`: add, edit, pause, or reactivate services
 - `/admin/pages`: homepage content editor
+- `/admin/calendar`: optional one-way Google Calendar sync
 - `/admin`: SEO settings and logo and favicon uploads
 
 Schedule changes that would conflict with a confirmed appointment are rejected.

@@ -92,7 +92,7 @@ $csrf = csrf_token();
 		<a class="admin-brand" href="/" target="_blank" rel="noreferrer"><?= branding_mark($settings, 'admin-mark') ?><span>Fieldnote Booking <small>Site admin</small></span></a>
 		<?php if (!empty($_SESSION['admin_id'])): ?><div class="admin-account"><span><?= h((string) $_SESSION['admin_username']) ?></span><form method="post" action="/admin"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><button class="text-button" name="action" value="logout">Sign out</button></form></div><?php endif; ?>
 	</header>
-	<nav class="admin-nav" aria-label="Admin sections"><a href="/admin">SEO manager</a><a href="/admin/bookings">Appointments</a><a href="/admin/availability">Availability</a><a href="/admin/services">Services</a><a href="/admin/pages" aria-current="page">Page editor</a></nav>
+	<nav class="admin-nav" aria-label="Admin sections"><a href="/admin">SEO manager</a><a href="/admin/bookings">Appointments</a><a href="/admin/availability">Availability</a><a href="/admin/services">Services</a><a href="/admin/calendar">Google Calendar</a><a href="/admin/pages" aria-current="page">Page editor</a></nav>
 	<main class="admin-main">
 		<div class="dashboard-heading"><div><p class="eyebrow">Homepage content</p><h1>Page editor</h1><p class="muted">Edit the public homepage copy and images. HTML is shown as text, never executed.</p></div><a class="outline-button" href="/" target="_blank" rel="noreferrer">View website <span aria-hidden="true">↗</span></a></div>
 		<?php if ($notice): ?><div class="success" role="status"><?= h($notice) ?></div><?php endif; ?>

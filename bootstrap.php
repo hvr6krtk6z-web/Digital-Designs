@@ -80,6 +80,12 @@ function app_db(): PDO
 		created_at TEXT NOT NULL,
 		updated_at TEXT NOT NULL
 	)');
+	$bookingColumns = array_column($db->query('PRAGMA table_info(bookings)')->fetchAll(PDO::FETCH_ASSOC), 'name');
+	foreach (['google_event_id' => 'TEXT NOT NULL DEFAULT ""', 'google_sync_error' => 'TEXT NOT NULL DEFAULT ""', 'google_synced_at' => 'TEXT NOT NULL DEFAULT ""'] as $column => $definition) {
+		if (!in_array($column, $bookingColumns, true)) {
+			$db->exec('ALTER TABLE bookings ADD COLUMN ' . $column . ' ' . $definition);
+		}
+	}
 	$db->exec('CREATE INDEX IF NOT EXISTS bookings_time_idx ON bookings (starts_at_utc, blocked_until_utc, status)');
 	$db->exec('CREATE INDEX IF NOT EXISTS bookings_date_idx ON bookings (local_date, status)');
 	$db->exec('CREATE TABLE IF NOT EXISTS booking_rate_limits (

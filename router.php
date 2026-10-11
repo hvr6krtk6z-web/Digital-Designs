@@ -9,7 +9,7 @@ if (str_starts_with($path, '/storage/') || str_starts_with($path, '/.')) {
 	exit;
 }
 
-$routes = ['/','/index.php','/preview.html','/admin','/admin/pages','/admin/bookings','/admin/services','/admin/availability','/book','/api/services','/api/calendar','/api/slots','/api/bookings','/api/admin/slots','/api/admin/bookings','/robots.txt','/sitemap.xml','/favicon.ico','/brand/favicon','/brand/logo'];
+$routes = ['/','/index.php','/preview.html','/admin','/admin/pages','/admin/bookings','/admin/services','/admin/availability','/admin/calendar','/book','/api/services','/api/calendar','/api/slots','/api/bookings','/api/admin/slots','/api/admin/bookings','/robots.txt','/sitemap.xml','/favicon.ico','/brand/favicon','/brand/logo'];
 if (!in_array($route, $routes, true)) {
 	$requested = realpath(__DIR__ . $path);
 	if ($requested && str_starts_with($requested, __DIR__ . DIRECTORY_SEPARATOR) && is_file($requested)) {
@@ -26,6 +26,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 header('X-Frame-Options: DENY');
 
 require __DIR__ . '/booking.php';
+require __DIR__ . '/google-calendar.php';
 
 if (str_starts_with($route, '/api/')) {
 	booking_api_dispatch(app_db(), $route);
@@ -43,7 +44,7 @@ if ($route === '/admin/pages') {
 	require __DIR__ . '/page-editor.php';
 	exit;
 }
-if (in_array($route, ['/admin/bookings', '/admin/services', '/admin/availability'], true)) {
+if (in_array($route, ['/admin/bookings', '/admin/services', '/admin/availability', '/admin/calendar'], true)) {
 	require __DIR__ . '/booking-admin.php';
 	exit;
 }
