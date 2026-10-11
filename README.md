@@ -7,6 +7,7 @@ A responsive, single-page creative studio website with a password-protected admi
 - Responsive homepage with studio introduction, services, sample projects, and contact link
 - Admin dashboard for page title, meta description, canonical URL, and social sharing metadata
 - Search indexing control with generated `robots.txt` and `sitemap.xml`
+- Separate favicon and logo uploads in the admin, with a built-in default favicon
 - SQLite-backed settings and a one-time, command-line-generated admin setup token
 - CSRF protection, secure session cookies, password hashing, and login throttling
 

@@ -34,6 +34,7 @@
 		.site-header { position: absolute; inset: 0 0 auto; z-index: 2; display: flex; align-items: center; justify-content: space-between; width: min(100% - 3rem, 1240px); margin: auto; padding: 1.45rem 0; color: var(--white); }
 		.wordmark { display: flex; gap: .75rem; align-items: center; text-decoration: none; font: 600 .95rem/1.05 var(--display); letter-spacing: 0; }
 		.mark { display: grid; width: 2.4rem; aspect-ratio: 1; place-items: center; color: var(--ink); background: var(--lime); font: 700 1rem var(--display); }
+		.brand-logo { object-fit: contain; background: none; }
 		.nav-links { display: flex; gap: clamp(1rem, 3vw, 2.4rem); align-items: center; margin: 0; padding: 0; list-style: none; }
 		.nav-links a { text-decoration: none; font-size: .85rem; }
 		.nav-links a:hover, .nav-links a:focus-visible { color: var(--lime); }
@@ -121,12 +122,13 @@
 			*, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 		}
 	</style>
+	[[brand:favicon]]
 </head>
 <body>
 	<a class="skip-link" href="#main">Skip to content</a>
 	<header class="site-header">
 		<a class="wordmark" href="#top" aria-label="Fieldnote Basic home">
-			<span class="mark" aria-hidden="true">F/</span>
+			[[brand:mark]]
 			<span>Fieldnote<br>Basic</span>
 		</a>
 		<nav aria-label="Main navigation">

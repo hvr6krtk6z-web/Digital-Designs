@@ -14,7 +14,7 @@ Open `http://localhost:8000/admin`. Before creating the only admin account, run 
 
 ## SEO manager
 
-At `/admin`, set the homepage title, meta description, canonical URL, social sharing title/description/image, and search indexing preference. The server uses these settings in the public page's HTML and generates `/robots.txt` and `/sitemap.xml`. The site starts with indexing disabled; enable it only after setting the production canonical URL.
+At `/admin`, set the homepage title, meta description, canonical URL, social sharing title/description/image, and search indexing preference. The server uses these settings in the public page's HTML and generates `/robots.txt` and `/sitemap.xml`. The site starts with indexing disabled; enable it only after setting the production canonical URL. The same page has separate uploads for the favicon (PNG, JPG, WebP or ICO, up to 512 KB) and the logo (PNG, JPG or WebP, up to 1 MB); uploads are stored in `storage/branding/` and served through `/brand/*` and `/favicon.ico`.
 
 ## Customize before delivery
 

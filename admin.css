@@ -20,6 +20,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .admin-brand { display: flex; gap: .75rem; align-items: center; color: inherit; font: 600 .95rem/1.1 var(--display); text-decoration: none; }
 .admin-brand small { display: block; margin-top: .25rem; color: #b8c0b9; font: 400 .72rem var(--body); }
 .admin-mark { display: grid; width: 2.4rem; aspect-ratio: 1; place-items: center; color: var(--ink); background: var(--lime); font: 700 1rem var(--display); }
+.brand-logo { object-fit: contain; background: none; }
 .admin-account { display: flex; gap: 1.25rem; align-items: center; color: #dce0d7; font-size: .85rem; }
 .admin-account form { margin: 0; }
 .text-button { padding: .4rem 0; border: 0; color: var(--lime); background: none; cursor: pointer; }

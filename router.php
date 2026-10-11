@@ -9,7 +9,7 @@ if (str_starts_with($path, '/storage/') || str_starts_with($path, '/.')) {
 	exit;
 }
 
-$routes = ['/', '/index.php', '/preview.html', '/admin', '/robots.txt', '/sitemap.xml'];
+$routes = ['/', '/index.php', '/preview.html', '/admin', '/robots.txt', '/sitemap.xml', '/favicon.ico', '/brand/favicon', '/brand/logo'];
 if (!in_array($route, $routes, true)) {
 	$requested = realpath(__DIR__ . $path);
 	if ($requested && str_starts_with($requested, __DIR__ . DIRECTORY_SEPARATOR) && is_file($requested)) {
@@ -32,6 +32,25 @@ if ($route === '/admin') {
 
 $db = app_db();
 $settings = setting_values($db);
+
+if (in_array($route, ['/favicon.ico', '/brand/favicon', '/brand/logo'], true)) {
+	$kind = $route === '/brand/logo' ? 'logo' : 'favicon';
+	$name = branding_file($settings, $kind);
+	if ($name === '') {
+		if ($kind === 'favicon') {
+			header('Location: /favicon.svg', true, 302);
+		} else {
+			http_response_code(404);
+		}
+		exit;
+	}
+	$types = ['png' => 'image/png', 'jpg' => 'image/jpeg', 'webp' => 'image/webp', 'ico' => 'image/x-icon'];
+	header('Content-Type: ' . $types[pathinfo($name, PATHINFO_EXTENSION)]);
+	header('Cache-Control: public, max-age=86400');
+	header('Content-Security-Policy: default-src \'none\'; sandbox');
+	readfile(branding_dir() . '/' . $name);
+	exit;
+}
 
 if ($route === '/robots.txt') {
 	header('Content-Type: text/plain; charset=utf-8');
@@ -78,6 +97,8 @@ if ($settings['canonical_url'] !== '') {
 	$meta .= '<link rel="canonical" href="' . h($settings['canonical_url']) . '">' . "\n";
 }
 $html = str_replace('<meta name="template-seo" content="dynamic">', $meta, $html);
+$html = str_replace('[[brand:favicon]]', branding_head($settings), $html);
+$html = str_replace('[[brand:mark]]', branding_mark($settings, 'mark'), $html);
 echo $html;
 
 function site_origin(array $settings): string
