@@ -29,7 +29,7 @@ Changing a schedule or date exception is rejected if it would conflict with a co
 
 ## Booking behavior
 
-Public bookings are confirmed immediately; the admin can cancel, complete, mark no-show, or reschedule them. Guests receive a confirmation reference and can download an `.ics` calendar event. This starter does not send email notifications or process payments, and it does not sync with Outlook.
+Public bookings are confirmed immediately; the admin can cancel, complete, mark no-show, or reschedule them. Guests receive a confirmation reference and can download an `.ics` calendar event. This starter does not send email notifications or process payments, and it does not sync with Outlook. Email notifications, payments and deposits, customer management and reporting are planned for Fieldnote Pro.
 
 ## Google Calendar sync
 

@@ -13,7 +13,17 @@ A responsive creative studio website with a real appointment calendar and a pass
 - Separate logo and favicon uploads, plus a SEO manager with generated `robots.txt` and `sitemap.xml`
 - Double-booking prevention, booking rate limiting, a honeypot field, CSRF protection, secure session cookies, password hashing, and login throttling
 
-Optional one-way Google Calendar sync pushes appointments to a calendar of your choice. Booking does not send email, take payments, or sync with Outlook.
+Optional one-way Google Calendar sync pushes appointments to a calendar of your choice. Booking does not send email, take payments, or sync with Outlook; email and payments are planned for Pro.
+
+## Fieldnote Pro (planned)
+
+Fieldnote Booking is the middle tier. These features are not included here and are planned for Fieldnote Pro (see the `fieldnote-pro` branch):
+
+- **Customer management (CRM):** customer directory, booking history and internal notes, search and filters, record export
+- **Advanced booking management:** day, week and month views, configurable cancellation rules, buffers and blocked periods
+- **Automated communications:** confirmation, cancellation and reminder emails, custom templates, owner notifications
+- **Payments and deposits:** optional Stripe, deposits or full payments, manual cash or bank-transfer recording
+- **Business dashboard:** upcoming appointments, booking and cancellation statistics, revenue reporting, CSV exports
 
 ## Requirements
 
