@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A responsive creative studio website template with a protected PHP and SQLite SEO manager, automatic sitemap, and single-site license.">
+	<meta name="theme-color" content="#17231d">
+	<title>Fieldnote Basic | Website + SEO Admin</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--ink: #17231d;
+			--paper: #f4f4ee;
+			--white: #fff;
+			--lime: #d2f36b;
+			--coral: #f2775b;
+			--muted: #626d65;
+			--line: rgba(23, 35, 29, .2);
+			--display: "Space Grotesk", sans-serif;
+			--body: "DM Sans", sans-serif;
+		}
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+		body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.55 var(--body); }
+		a { color: inherit; }
+		.skip-link { position: absolute; z-index: 10; top: -4rem; left: 1rem; padding: .7rem 1rem; color: var(--ink); background: var(--lime); }
+		.skip-link:focus { top: 1rem; }
+		.site-header { position: absolute; z-index: 2; top: 0; left: 50%; display: flex; width: min(100% - 3rem, 1240px); align-items: center; justify-content: space-between; padding: 1.3rem 0; color: var(--white); transform: translateX(-50%); }
+		.wordmark { display: flex; gap: .7rem; align-items: center; color: inherit; font: 600 .92rem/1.05 var(--display); text-decoration: none; }
+		.mark { display: grid; width: 2.35rem; aspect-ratio: 1; place-items: center; color: var(--ink); background: var(--lime); font: 700 1rem var(--display); }
+		.nav-links { display: flex; gap: clamp(1rem, 2.5vw, 2rem); align-items: center; margin: 0; padding: 0; list-style: none; }
+		.nav-links a { color: inherit; font-size: .82rem; text-decoration: none; }
+		.nav-links a:hover, .nav-links a:focus-visible { color: var(--lime); }
+		.nav-links .admin-link { padding: .55rem .8rem; border: 1px solid rgba(255,255,255,.65); }
+		.hero { position: relative; display: flex; min-height: min(780px, 86svh); align-items: center; overflow: hidden; color: var(--white); background: var(--ink); }
+		.hero-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 52%; opacity: .52; }
+		.hero::after { position: absolute; inset: 0; content: ""; background: linear-gradient(90deg, rgba(12,22,16,.86), rgba(12,22,16,.48) 64%, rgba(12,22,16,.12)); }
+		.hero-inner { position: relative; z-index: 1; width: min(100% - 3rem, 1240px); margin: 4.5rem auto 0; animation: rise .7s ease-out both; }
+		.eyebrow { display: flex; gap: .7rem; align-items: center; margin: 0 0 1.25rem; color: #64773a; font-size: .73rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+		.eyebrow::before { width: 1.8rem; height: 2px; content: ""; background: currentColor; }
+		.hero .eyebrow, .cta .eyebrow { color: var(--lime); }
+		h1, h2, h3, p { margin-top: 0; }
+		h1 { max-width: 860px; margin-bottom: 1.2rem; font: 500 clamp(3.6rem, 8vw, 7.2rem)/.95 var(--display); letter-spacing: 0; }
+		h1 span { color: var(--lime); }
+		.hero-copy { max-width: 540px; margin-bottom: 1.8rem; color: rgba(255,255,255,.82); font-size: clamp(1rem, 1.5vw, 1.2rem); }
+		.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+		.button { display: inline-flex; min-height: 3.1rem; align-items: center; justify-content: center; gap: 1rem; padding: .7rem 1.1rem; border: 1px solid var(--lime); color: var(--ink); background: var(--lime); font-weight: 700; text-decoration: none; transition: background .2s ease, color .2s ease; }
+		.button:hover, .button:focus-visible { color: var(--lime); background: transparent; }
+		.button-secondary { border-color: rgba(255,255,255,.55); color: var(--white); background: transparent; }
+		.button-secondary:hover, .button-secondary:focus-visible { border-color: var(--lime); color: var(--ink); background: var(--lime); }
+		.button .arrow { font-size: 1.2rem; }
+		.hero-note { position: absolute; z-index: 1; right: max(1.5rem, calc((100vw - 1240px) / 2)); bottom: 1.5rem; left: max(1.5rem, calc((100vw - 1240px) / 2)); display: flex; justify-content: space-between; color: rgba(255,255,255,.72); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+		.proof { display: grid; grid-template-columns: repeat(3, 1fr); padding: 0 max(1.5rem, calc((100vw - 1240px) / 2)); color: var(--white); background: var(--ink); }
+		.proof-item { display: flex; min-height: 82px; align-items: center; gap: .8rem; padding: 1rem; border-top: 1px solid rgba(255,255,255,.2); }
+		.proof-item + .proof-item { border-left: 1px solid rgba(255,255,255,.2); }
+		.proof-number { color: var(--lime); font: 500 1.3rem var(--display); }
+		.proof-label { color: rgba(255,255,255,.84); font-size: .82rem; }
+		.intro { display: grid; grid-template-columns: .7fr 1.3fr; gap: 5vw; align-items: start; padding: clamp(5rem, 9vw, 8rem) max(1.5rem, calc((100vw - 1240px) / 2)); }
+		.section-heading { max-width: 780px; margin: -.4rem 0 1rem; font: 500 clamp(2.6rem, 5.3vw, 5rem)/1.02 var(--display); letter-spacing: 0; }
+		.intro h2 em { color: #687d31; font-style: normal; }
+		.intro-copy { max-width: 620px; color: var(--muted); font-size: 1.05rem; }
+		.preview { padding: 0 max(1.5rem, calc((100vw - 1240px) / 2)) clamp(5rem, 9vw, 8rem); }
+		.preview-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem; }
+		.preview-head .section-heading { margin-bottom: 0; }
+		.preview-head p { max-width: 320px; margin: 0; color: var(--muted); font-size: .9rem; }
+		.preview-frame { overflow: hidden; border: 1px solid #c9cec5; background: var(--white); box-shadow: 0 18px 46px rgba(23,35,29,.13); }
+		.frame-bar { display: flex; height: 42px; align-items: center; gap: .45rem; padding: 0 .9rem; border-bottom: 1px solid var(--line); background: #fff; }
+		.frame-dot { width: .55rem; aspect-ratio: 1; border-radius: 50%; background: #bec4bc; }
+		.frame-url { width: min(330px, 55%); margin: 0 auto; padding: .2rem .7rem; border-radius: 2px; color: #6a746c; background: #f2f3ef; font-size: .68rem; text-align: center; }
+		.preview-frame iframe { display: block; width: 100%; height: 740px; border: 0; background: var(--paper); }
+		.preview-link { display: flex; justify-content: flex-end; padding: .85rem 1rem; border-top: 1px solid var(--line); color: #495a24; font-size: .82rem; font-weight: 700; text-decoration: none; }
+		.backend { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 7vw, 6rem); align-items: center; padding: clamp(5rem, 9vw, 8rem) max(1.5rem, calc((100vw - 1240px) / 2)); background: #e6edcf; }
+		.backend-copy .section-heading { font-size: clamp(2.7rem, 5vw, 4.5rem); }
+		.backend-copy > p:not(.eyebrow) { max-width: 520px; color: #526047; }
+		.feature-list { margin: 1.7rem 0 0; padding: 0; list-style: none; border-top: 1px solid rgba(23,35,29,.26); }
+		.feature-list li { display: grid; grid-template-columns: 2.4rem 1fr; gap: .5rem; padding: .85rem 0; border-bottom: 1px solid rgba(23,35,29,.26); }
+		.feature-list .num { color: #66763a; font-size: .72rem; }
+		.feature-list strong { display: block; font: 600 1rem var(--display); }
+		.feature-list small { display: block; margin-top: .18rem; color: #59644f; font-size: .8rem; }
+		.admin-preview { min-width: 0; border: 1px solid #bfc9a3; background: var(--white); box-shadow: 12px 14px 0 rgba(23,35,29,.1); }
+		.admin-preview-top { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1rem; color: var(--white); background: var(--ink); font: 600 .85rem var(--display); }
+		.admin-preview-top span:last-child { color: var(--lime); font: 400 .72rem var(--body); }
+		.admin-preview-body { padding: 1.2rem; }
+		.admin-preview-label { margin: 0 0 .25rem; color: #687169; font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+		.admin-preview-title { margin: 0 0 .9rem; font: 600 1rem var(--display); }
+		.fake-field { margin-bottom: .85rem; padding: .68rem .75rem; border: 1px solid #d8ded3; color: #3d493f; background: #fcfcfa; font-size: .78rem; overflow-wrap: anywhere; }
+		.fake-field.multiline { min-height: 58px; }
+		.fake-toggle { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 1rem 0; padding-top: .9rem; border-top: 1px solid var(--line); font-size: .77rem; }
+		.switch { position: relative; flex: 0 0 40px; height: 23px; border-radius: 20px; background: #50662a; }
+		.switch::after { position: absolute; top: 3px; right: 3px; width: 17px; height: 17px; border-radius: 50%; content: ""; background: #fff; }
+		.fake-save { display: inline-block; padding: .62rem .8rem; color: var(--white); background: var(--ink); font-size: .74rem; font-weight: 700; }
+		.backend-caption { margin: 1rem 0 0; color: #59644f; font-size: .75rem; }
+		.included { padding: clamp(5rem, 9vw, 8rem) max(1.5rem, calc((100vw - 1240px) / 2)); }
+		.included-head { display: grid; grid-template-columns: .7fr 1.3fr; gap: 5vw; align-items: start; margin-bottom: 2rem; }
+		.included-head .section-heading { margin: -.4rem 0 0; }
+		.included-table { border-top: 1px solid var(--line); }
+		.included-row { display: grid; grid-template-columns: 3.2rem 1fr 1fr; gap: 1rem; align-items: baseline; padding: 1.15rem 0; border-bottom: 1px solid var(--line); }
+		.included-row .num { color: #9c4d38; font-size: .73rem; }
+		.included-row h3 { margin: 0; font: 600 1rem var(--display); }
+		.included-row p { margin: 0; color: var(--muted); font-size: .84rem; }
+		.specs { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.5rem; }
+		.spec { padding: .46rem .65rem; border: 1px solid var(--line); color: #465042; font-size: .76rem; }
+		.license { display: grid; grid-template-columns: .8fr 1.2fr; gap: 4vw; padding: clamp(3.8rem, 7vw, 6rem) max(1.5rem, calc((100vw - 1240px) / 2)); color: var(--white); background: #a64c38; }
+		.license h2 { margin: 0; font: 500 clamp(2.4rem, 4.5vw, 4rem)/1 var(--display); letter-spacing: 0; }
+		.license p { max-width: 680px; margin-bottom: .8rem; color: rgba(255,255,255,.9); }
+		.license a { color: #fff; font-weight: 700; }
+		.cta { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; padding: clamp(4.5rem, 8vw, 7rem) max(1.5rem, calc((100vw - 1240px) / 2)); color: var(--white); background: var(--ink); }
+		.cta h2 { max-width: 730px; margin: 0; font: 500 clamp(3rem, 6.5vw, 6rem)/.98 var(--display); letter-spacing: 0; }
+		.cta h2 span { color: var(--lime); }
+		.cta-actions { display: flex; flex-direction: column; align-items: flex-start; gap: .8rem; }
+		.cta-actions p { max-width: 250px; margin: 0; color: rgba(255,255,255,.68); font-size: .83rem; }
+		.site-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.25rem max(1.5rem, calc((100vw - 1240px) / 2)); color: rgba(255,255,255,.67); background: #101914; font-size: .75rem; }
+		.site-footer p { margin: 0; }
+		.site-footer a { color: var(--lime); text-decoration: none; }
+		@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+		@media (max-width: 760px) {
+			.site-header { width: calc(100% - 2rem); padding-top: .9rem; }
+			.nav-links { gap: .8rem; }
+			.nav-links li:first-child { display: none; }
+			.nav-links .admin-link { padding: .5rem .6rem; font-size: .76rem; }
+			.hero { min-height: min(760px, 84svh); }
+			.hero-image { object-position: 60% center; }
+			.hero::after { background: linear-gradient(90deg, rgba(12,22,16,.84), rgba(12,22,16,.42)); }
+			.hero-inner { width: calc(100% - 2rem); margin-top: 3rem; }
+			h1 { font-size: clamp(3.4rem, 15vw, 6rem); }
+			.hero-note { right: 1rem; bottom: 1rem; left: 1rem; font-size: .62rem; }
+			.proof { grid-template-columns: 1fr; padding: 0 1rem; }
+			.proof-item { min-height: 58px; padding: .7rem .2rem; }
+			.proof-item + .proof-item { border-left: 0; }
+			.intro { grid-template-columns: 1fr; gap: 1rem; padding: 4.5rem 1rem; }
+			.intro .section-heading, .section-heading { font-size: clamp(2.7rem, 12vw, 4.3rem); }
+			.preview { padding: 0 1rem 4.5rem; }
+			.preview-head { align-items: start; flex-direction: column; gap: .6rem; }
+			.preview-frame iframe { height: 720px; }
+			.backend { grid-template-columns: 1fr; gap: 2.5rem; padding: 4.5rem 1rem; }
+			.included { padding: 4.5rem 1rem; }
+			.included-head { grid-template-columns: 1fr; gap: 1rem; }
+			.included-row { grid-template-columns: 2rem 1fr; gap: .55rem; }
+			.included-row p { grid-column: 2; }
+			.license { grid-template-columns: 1fr; gap: 1rem; padding: 3.7rem 1rem; }
+			.cta { grid-template-columns: 1fr; gap: 1.6rem; padding: 4.5rem 1rem; }
+			.cta h2 { font-size: clamp(3.2rem, 14vw, 5rem); }
+			.site-footer { flex-direction: column; padding: 1.1rem 1rem; }
+		}
+		@media (prefers-reduced-motion: reduce) {
+			html { scroll-behavior: auto; }
+			*, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+		}
+	</style>
+</head>
+<body>
+	<a class="skip-link" href="#main">Skip to content</a>
+	<header class="site-header">
+		<a class="wordmark" href="#top" aria-label="Fieldnote Basic template home"><span class="mark" aria-hidden="true">F/</span><span>Fieldnote<br>Basic template</span></a>
+		<nav aria-label="Main navigation"><ul class="nav-links"><li><a href="#features">What's included</a></li><li><a href="#license">License</a></li><li><a class="admin-link" href="/admin">SEO admin <span aria-hidden="true">↗</span></a></li></ul></nav>
+	</header>
+	<main id="main">
+		<section class="hero" id="top" aria-labelledby="hero-title">
+			<img class="hero-image" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=2200&q=85" alt="Creative workspace with a laptop open to a website" fetchpriority="high">
+			<div class="hero-inner">
+				<p class="eyebrow">The creative studio website, upgraded</p>
+				<h1 id="hero-title">A studio site.<br><span>With a brain.</span></h1>
+				<p class="hero-copy">Fieldnote Basic pairs a distinctive, responsive studio website with a real admin area for SEO, social sharing and search visibility.</p>
+				<div class="hero-actions"><a class="button" href="#live-demo">Explore the live demo <span class="arrow" aria-hidden="true">↘</span></a><a class="button button-secondary" href="#backend">See the SEO manager <span class="arrow" aria-hidden="true">↓</span></a></div>
+			</div>
+			<div class="hero-note"><span>Responsive studio template</span><span>PHP&nbsp; / &nbsp;SQLite&nbsp; / &nbsp;No build step</span></div>
+		</section>
+		<section class="proof" aria-label="Product highlights"><div class="proof-item"><span class="proof-number">01</span><span class="proof-label">A complete creative studio website</span></div><div class="proof-item"><span class="proof-number">02</span><span class="proof-label">SEO settings saved to SQLite</span></div><div class="proof-item"><span class="proof-number">03</span><span class="proof-label">Secure, one-time admin setup</span></div></section>
+		<section class="intro" aria-labelledby="intro-title"><p class="eyebrow">Made to customize</p><div><h2 class="section-heading" id="intro-title">Looks like a portfolio.<br><em>Works like a product.</em></h2><p class="intro-copy">A polished starting point for designers, small agencies and independent studios. Show services and selected work on the front end, then manage the search basics without editing page source every time.</p></div></section>
+		<section class="preview" id="live-demo" aria-labelledby="preview-title">
+			<div class="preview-head"><div><p class="eyebrow">The front end</p><h2 class="section-heading" id="preview-title">A real, working preview.</h2></div><p>See the responsive studio homepage as shipped, with services, sample projects and a direct contact CTA.</p></div>
+			<div class="preview-frame"><div class="frame-bar" aria-hidden="true"><span class="frame-dot"></span><span class="frame-dot"></span><span class="frame-dot"></span><span class="frame-url">Fieldnote Basic · Homepage preview</span></div><iframe src="/preview.html" title="Live preview of the Fieldnote Basic website template" loading="lazy"></iframe><a class="preview-link" href="/preview.html" target="_blank" rel="noreferrer">Open the full website preview <span aria-hidden="true">↗</span></a></div>
+		</section>
+		<section class="backend" id="backend" aria-labelledby="backend-title">
+			<div class="backend-copy"><p class="eyebrow">The back end</p><h2 class="section-heading" id="backend-title">SEO, without opening the code.</h2><p>Sign in to update the homepage search listing and social preview. Settings persist in SQLite and feed into the public page.</p>
+				<ol class="feature-list">
+					<li><span class="num">01</span><span><strong>Search listing</strong><small>Edit the page title, meta description and canonical URL.</small></span></li>
+					<li><span class="num">02</span><span><strong>Social sharing</strong><small>Set Open Graph and Twitter title, description and image.</small></span></li>
+					<li><span class="num">03</span><span><strong>Indexing controls</strong><small>Switch indexing on or off; update robots.txt and sitemap.xml automatically.</small></span></li>
+					<li><span class="num">04</span><span><strong>Protected admin</strong><small>One admin account, password hashing, CSRF protection, hardened sessions and login throttling.</small></span></li>
+					<li><span class="num">05</span><span><strong>Private first-run setup</strong><small>Generate a one-time setup token from the server CLI. It is removed after account creation.</small></span></li>
+				</ol>
+			</div>
+			<div><div class="admin-preview" aria-label="Illustration of the SEO manager settings form"><div class="admin-preview-top"><span>Search appearance</span><span>ADMIN · PRIVATE</span></div><div class="admin-preview-body"><p class="admin-preview-label">Page title</p><p class="fake-field">Fieldnote Basic | Independent creative studio</p><p class="admin-preview-label">Meta description</p><p class="fake-field multiline">Thoughtful brands and digital experiences for people doing things differently.</p><p class="admin-preview-label">Canonical URL</p><p class="fake-field">https://your-studio.com/</p><div class="fake-toggle"><span>Allow search engines to index this site</span><span class="switch" aria-hidden="true"></span></div><span class="fake-save">Save SEO settings</span></div></div><p class="backend-caption">Settings screen shown for illustration. Sign in to the running demo to try it.</p><a class="preview-link" href="/admin">Open the SEO admin <span aria-hidden="true">↗</span></a></div>
+		</section>
+		<section class="included" id="features" aria-labelledby="included-title">
+			<div class="included-head"><p class="eyebrow">Ready to make your own</p><div><h2 class="section-heading" id="included-title">The useful details are already here.</h2><p class="intro-copy">A simple stack keeps setup approachable and the handoff understandable.</p></div></div>
+			<div class="included-table">
+				<div class="included-row"><span class="num">01</span><h3>Responsive public site</h3><p>Studio intro, services, project showcase and contact section.</p></div>
+				<div class="included-row"><span class="num">02</span><h3>Real admin backend</h3><p>PHP 8.1+, PDO SQLite, persistent settings and one admin account.</p></div>
+				<div class="included-row"><span class="num">03</span><h3>Technical SEO routes</h3><p>Server-rendered metadata, canonical tag, robots.txt and sitemap.xml.</p></div>
+				<div class="included-row"><span class="num">04</span><h3>Clear handoff</h3><p>Setup and customization guide, private storage notes and no build tooling.</p></div>
+			</div>
+			<div class="specs" aria-label="Technical requirements"><span class="spec">PHP 8.1+</span><span class="spec">PDO SQLite</span><span class="spec">No Composer</span><span class="spec">No JavaScript build</span><span class="spec">Apache rewrite or PHP router</span></div>
+		</section>
+		<section class="license" id="license" aria-labelledby="license-title"><h2 id="license-title">One license.<br>One finished website.</h2><div><p>The single-site license permits one production website for one business, organization or client. Staging and backup copies for that same site are included.</p><p>It does not allow reselling, sharing or redistributing the template source as a theme, download, starter kit or competing product. Review the full <a href="/LICENSE">license terms</a> before purchase.</p></div></section>
+		<section class="cta" aria-labelledby="cta-title"><div><p class="eyebrow">Take it for a spin</p><h2 id="cta-title">See how it <span>feels.</span></h2></div><div class="cta-actions"><p>Browse the studio homepage or inspect the SEO manager demo.</p><a class="button" href="/preview.html">View the live template <span class="arrow" aria-hidden="true">↗</span></a><a class="button button-secondary" href="/admin">Open the admin <span class="arrow" aria-hidden="true">↗</span></a></div></section>
+	</main>
+	<footer class="site-footer"><p>Fieldnote Basic website template · Demo names and project copy are fictional.</p><p><a href="#top">Back to top ↑</a></p></footer>
+</body>
+</html>

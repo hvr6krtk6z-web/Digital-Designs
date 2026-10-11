@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#17231d">
+	<meta name="description" content="Fieldnote Basic is an independent creative studio for thoughtful brands and digital experiences.">
+	<meta name="template-seo" content="dynamic">
+	<title>Fieldnote Basic | Independent creative studio</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			color-scheme: light;
+			--ink: #17231d;
+			--paper: #f4f4ee;
+			--white: #fff;
+			--lime: #d2f36b;
+			--coral: #f2775b;
+			--muted: #687169;
+			--line: rgba(23, 35, 29, .18);
+			--display: "Space Grotesk", sans-serif;
+			--body: "DM Sans", sans-serif;
+		}
+
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+		body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.55 var(--body); }
+		a { color: inherit; }
+		img { display: block; width: 100%; }
+		.skip-link { position: absolute; top: -4rem; left: 1rem; z-index: 10; padding: .7rem 1rem; background: var(--lime); }
+		.skip-link:focus { top: 1rem; }
+		.site-header { position: absolute; inset: 0 0 auto; z-index: 2; display: flex; align-items: center; justify-content: space-between; width: min(100% - 3rem, 1240px); margin: auto; padding: 1.45rem 0; color: var(--white); }
+		.wordmark { display: flex; gap: .75rem; align-items: center; text-decoration: none; font: 600 .95rem/1.05 var(--display); letter-spacing: 0; }
+		.mark { display: grid; width: 2.4rem; aspect-ratio: 1; place-items: center; color: var(--ink); background: var(--lime); font: 700 1rem var(--display); }
+		.nav-links { display: flex; gap: clamp(1rem, 3vw, 2.4rem); align-items: center; margin: 0; padding: 0; list-style: none; }
+		.nav-links a { text-decoration: none; font-size: .85rem; }
+		.nav-links a:hover, .nav-links a:focus-visible { color: var(--lime); }
+		.nav-contact { padding: .68rem 1rem; border: 1px solid rgba(255,255,255,.65); }
+		.hero { position: relative; display: flex; min-height: 720px; min-height: min(850px, 100svh); align-items: center; overflow: hidden; color: var(--white); background: var(--ink); }
+		.hero-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; opacity: .53; }
+		.hero::after { position: absolute; inset: 0; content: ""; background: rgba(10, 20, 14, .46); }
+		.hero-inner { position: relative; z-index: 1; width: min(100% - 3rem, 1240px); margin: 4rem auto 0; animation: arrive .75s ease-out both; }
+		.eyebrow { display: flex; gap: .75rem; align-items: center; margin: 0 0 1.4rem; color: var(--lime); font-size: .75rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+		.eyebrow::before { width: 2.2rem; height: 2px; content: ""; background: currentColor; }
+		h1, h2, h3, p { margin-top: 0; }
+		h1 { max-width: 900px; margin-bottom: 1.2rem; font: 500 clamp(3.6rem, 9vw, 7.8rem)/.94 var(--display); letter-spacing: 0; }
+		h1 span { color: var(--lime); }
+		.hero-copy { max-width: 540px; margin-bottom: 2rem; color: rgba(255,255,255,.82); font-size: clamp(1rem, 1.5vw, 1.2rem); }
+		.button { display: inline-flex; min-height: 3.2rem; align-items: center; justify-content: center; padding: .7rem 1.2rem; border: 1px solid var(--lime); background: var(--lime); color: var(--ink); font-weight: 700; text-decoration: none; transition: background-color .2s ease, color .2s ease; }
+		.button:hover, .button:focus-visible { background: transparent; color: var(--lime); }
+		.button .arrow { margin-left: 1.4rem; font-size: 1.25rem; }
+		.hero-foot { position: absolute; z-index: 1; right: max(1.5rem, calc((100vw - 1240px) / 2)); bottom: 2rem; left: max(1.5rem, calc((100vw - 1240px) / 2)); display: flex; justify-content: space-between; color: rgba(255,255,255,.75); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+		.intro { display: grid; grid-template-columns: .8fr 1.2fr; gap: 5vw; align-items: start; padding: clamp(5rem, 10vw, 9rem) max(1.5rem, calc((100vw - 1240px) / 2)); }
+		.intro .eyebrow { color: #58682f; }
+		.intro h2 { max-width: 760px; margin: -.5rem 0 1.3rem; font: 500 clamp(2.5rem, 5.2vw, 5rem)/1.02 var(--display); letter-spacing: 0; }
+		.intro h2 em { color: #6c8134; font-style: normal; }
+		.intro p:not(.eyebrow) { max-width: 650px; color: var(--muted); font-size: 1.05rem; }
+		.services { padding: 5rem max(1.5rem, calc((100vw - 1240px) / 2)) 6rem; background: var(--lime); }
+		.section-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
+		.section-head h2 { margin: 0; font: 500 clamp(2.5rem, 5vw, 4.6rem)/1 var(--display); letter-spacing: 0; }
+		.section-head p { max-width: 330px; margin: 0; color: #49533a; }
+		.service-list { border-top: 1px solid rgba(23,35,29,.35); }
+		.service-row { display: grid; grid-template-columns: 4rem 1fr auto; gap: 1rem; align-items: center; min-height: 88px; border-bottom: 1px solid rgba(23,35,29,.35); }
+		.service-row .number { color: #64723d; font-size: .78rem; }
+		.service-row h3 { margin: 0; font: 500 clamp(1.25rem, 2.5vw, 2rem)/1.15 var(--display); letter-spacing: 0; }
+		.service-row .plus { font: 400 1.7rem var(--display); }
+		.work { padding: clamp(5rem, 9vw, 8rem) max(1.5rem, calc((100vw - 1240px) / 2)); }
+		.work .section-head { align-items: start; margin-bottom: 2.5rem; }
+		.work .eyebrow { color: #a54736; }
+		.work-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1.3rem; }
+		.project { min-width: 0; }
+		.project:nth-child(2) { margin-top: 5rem; }
+		.project-image { aspect-ratio: 1.28; overflow: hidden; background: #dfe1d7; }
+		.project-image img { height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+		.project:hover .project-image img { transform: scale(1.035); }
+		.project-meta { display: flex; justify-content: space-between; gap: 1rem; padding-top: .9rem; }
+		.project-meta h3 { margin: 0; font: 500 1.25rem var(--display); letter-spacing: 0; }
+		.project-meta p { margin: .2rem 0 0; color: var(--muted); font-size: .85rem; }
+		.project-arrow { color: #a54736; font-size: 1.4rem; }
+		.contact { display: grid; grid-template-columns: 1.3fr .7fr; gap: 3rem; align-items: end; padding: clamp(4.5rem, 8vw, 7rem) max(1.5rem, calc((100vw - 1240px) / 2)); color: var(--white); background: var(--ink); }
+		.contact .eyebrow { color: var(--lime); }
+		.contact h2 { max-width: 780px; margin-bottom: 1.5rem; font: 500 clamp(3rem, 7vw, 6.5rem)/.98 var(--display); letter-spacing: 0; }
+		.contact h2 span { color: var(--lime); }
+		.contact-note { margin: 0 0 .3rem; color: rgba(255,255,255,.7); }
+		.contact-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
+		.contact-aside p { max-width: 280px; margin: 0; color: rgba(255,255,255,.68); font-size: .9rem; }
+		.contact .button:hover, .contact .button:focus-visible { color: var(--white); }
+		.site-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.3rem max(1.5rem, calc((100vw - 1240px) / 2)); color: rgba(255,255,255,.65); background: #111a15; font-size: .75rem; }
+		.site-footer p { margin: 0; }
+		.site-footer a { color: var(--lime); text-decoration: none; }
+		@keyframes arrive { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+		@media (max-width: 700px) {
+			.site-header { width: calc(100% - 2rem); padding-top: 1rem; }
+			.nav-links { gap: .8rem; }
+			.nav-links li:nth-child(2), .nav-links li:nth-child(3) { display: none; }
+			.nav-contact { padding: .55rem .7rem; }
+			.hero { min-height: 720px; min-height: 92svh; }
+			.hero-image { object-position: 58% center; }
+			.hero-inner { width: calc(100% - 2rem); margin-top: 3rem; }
+			h1 { font-size: clamp(3.5rem, 17vw, 6rem); }
+			.hero-foot { right: 1rem; bottom: 1.2rem; left: 1rem; }
+			.intro { grid-template-columns: 1fr; gap: 1.2rem; padding: 4.5rem 1rem; }
+			.intro h2 { font-size: clamp(2.8rem, 12vw, 4.4rem); }
+			.services { padding: 4rem 1rem; }
+			.section-head { display: block; }
+			.section-head p { margin-top: 1rem; }
+			.service-row { grid-template-columns: 2rem 1fr auto; min-height: 78px; }
+			.work { padding: 4.5rem 1rem; }
+			.work .section-head { margin-bottom: 1.8rem; }
+			.work-grid { grid-template-columns: 1fr; gap: 2rem; }
+			.project:nth-child(2) { margin-top: 0; }
+			.project-image { aspect-ratio: 1.3; }
+			.contact { grid-template-columns: 1fr; gap: 1.5rem; padding: 4.5rem 1rem; }
+			.contact h2 { font-size: clamp(3.2rem, 15vw, 5rem); }
+			.site-footer { flex-direction: column; padding: 1.2rem 1rem; }
+		}
+		@media (prefers-reduced-motion: reduce) {
+			html { scroll-behavior: auto; }
+			*, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+		}
+	</style>
+</head>
+<body>
+	<a class="skip-link" href="#main">Skip to content</a>
+	<header class="site-header">
+		<a class="wordmark" href="#top" aria-label="Fieldnote Basic home">
+			<span class="mark" aria-hidden="true">F/</span>
+			<span>Fieldnote<br>Basic</span>
+		</a>
+		<nav aria-label="Main navigation">
+			<ul class="nav-links">
+				<li><a href="#services">Services</a></li>
+				<li><a href="#work">Selected work</a></li>
+				<li><a class="nav-contact" href="#contact">Start a project <span aria-hidden="true">↗</span></a></li>
+			</ul>
+		</nav>
+	</header>
+	<main id="main">
+		<section class="hero" id="top" aria-labelledby="hero-title">
+			<img class="hero-image" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=2200&q=85" alt="Creative workspace with a laptop and web design in progress">
+			<div class="hero-inner">
+				<p class="eyebrow">Independent creative studio</p>
+				<h1 id="hero-title">Make a mark.<br><span>Mean it.</span></h1>
+				<p class="hero-copy">We build thoughtful brands and digital experiences for people doing things differently.</p>
+				<a class="button" href="#work">Explore the work <span class="arrow" aria-hidden="true">↘</span></a>
+			</div>
+			<div class="hero-foot"><span>Independent by nature</span><span>Strategy&nbsp;&nbsp; / &nbsp;&nbsp;Identity&nbsp;&nbsp; / &nbsp;&nbsp;Digital</span></div>
+		</section>
+		<section class="intro" aria-labelledby="intro-title">
+			<p class="eyebrow">A connected approach</p>
+			<div>
+				<h2 id="intro-title">Clear thinking. <em>Good feeling.</em></h2>
+				<p>We partner with ambitious people to turn a little spark into a brand with purpose, a website with character and a story worth sharing.</p>
+			</div>
+		</section>
+		<section class="services" id="services" aria-labelledby="services-title">
+			<div class="section-head">
+				<h2 id="services-title">What we do</h2>
+				<p>Small, considered teams. Work that feels like you, only clearer.</p>
+			</div>
+			<div class="service-list">
+				<div class="service-row"><span class="number">01</span><h3>Brand strategy &amp; identity</h3><span class="plus" aria-hidden="true">↗</span></div>
+				<div class="service-row"><span class="number">02</span><h3>Websites &amp; digital experiences</h3><span class="plus" aria-hidden="true">↗</span></div>
+				<div class="service-row"><span class="number">03</span><h3>Campaigns &amp; art direction</h3><span class="plus" aria-hidden="true">↗</span></div>
+				<div class="service-row"><span class="number">04</span><h3>Packaging &amp; print</h3><span class="plus" aria-hidden="true">↗</span></div>
+			</div>
+		</section>
+		<section class="work" id="work" aria-labelledby="work-title">
+			<div class="section-head">
+				<div><p class="eyebrow">A few good things</p><h2 id="work-title">Selected work</h2></div>
+				<p>A couple of sample projects to show how your work could take centre stage.</p>
+			</div>
+			<div class="work-grid">
+				<article class="project">
+					<div class="project-image"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=85" alt="Minimal skincare bottles arranged against a warm background" loading="lazy"></div>
+					<div class="project-meta"><div><h3>Goodwell Botanics</h3><p>Sample project · Brand &amp; packaging</p></div><span class="project-arrow" aria-hidden="true">↗</span></div>
+				</article>
+				<article class="project">
+					<div class="project-image"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=85" alt="Sunlit independent cafe with a welcoming counter" loading="lazy"></div>
+					<div class="project-meta"><div><h3>Sunday Standard</h3><p>Sample project · Identity &amp; website</p></div><span class="project-arrow" aria-hidden="true">↗</span></div>
+				</article>
+			</div>
+		</section>
+		<section class="contact" id="contact" aria-labelledby="contact-title">
+			<div>
+				<p class="eyebrow">Have a good one?</p>
+				<h2 id="contact-title">Let's make it <span>real.</span></h2>
+				<p class="contact-note">Tell us what you're building. We'll take it from there.</p>
+			</div>
+			<div class="contact-aside">
+				<p>Tell us a little about what you have in mind and we'll get back to you.</p>
+				<a class="button" href="mailto:hello@example.com">Start a conversation <span class="arrow" aria-hidden="true">↗</span></a>
+			</div>
+		</section>
+	</main>
+	<footer class="site-footer">
+		<p>© 2026 Fieldnote Basic</p>
+		<p>Independent creative studio · <a href="#top">Back to top ↑</a></p>
+	</footer>
+</body>
+</html>

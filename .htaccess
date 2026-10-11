@@ -1,0 +1,4 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^storage/ - [F,L]
+RewriteRule ^(?:admin|robots\.txt|sitemap\.xml|preview\.html|index\.php)?$ router.php [QSA,L]
