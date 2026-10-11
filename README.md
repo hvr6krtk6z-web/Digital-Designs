@@ -1,16 +1,65 @@
-# Fieldnote Basic
+# Fieldnote Pro
 
-A responsive, single-page creative studio website with a password-protected admin area for homepage SEO settings. Built with PHP and SQLite, with no Composer dependencies or JavaScript build step.
+Fieldnote Pro is the planned top tier of the Fieldnote template family: a creative studio website with online booking, customer management, automated emails, payments, and a business dashboard. Built with PHP and SQLite.
 
-## Features
+> **Status: in development.** The features below are planned and are not implemented yet. This branch currently contains the Fieldnote Basic starting point (homepage plus SEO admin). Everything in [Planned features](#planned-features) will be added here.
 
-- Responsive homepage with studio introduction, services, sample projects, and contact link
-- Admin dashboard for page title, meta description, canonical URL, and social sharing metadata
-- Search indexing control with generated `robots.txt` and `sitemap.xml`
-- SQLite-backed settings and a one-time, command-line-generated admin setup token
-- CSRF protection, secure session cookies, password hashing, and login throttling
+## The Fieldnote family
 
-Fieldnote Basic does not include appointment booking or calendar management.
+| | Basic | Booking | Pro (planned) |
+| --- | :---: | :---: | :---: |
+| Responsive homepage and SEO manager | ✓ | ✓ | ✓ |
+| Logo and favicon uploads | ✓ | ✓ | ✓ |
+| Online booking calendar | | ✓ | ✓ |
+| Availability, services and page editor | | ✓ | ✓ |
+| Google Calendar sync (one-way) | | ✓ | ✓ |
+| Customer management (CRM) | | | ✓ |
+| Advanced booking management | | | ✓ |
+| Automated emails | | | ✓ |
+| Payments and deposits | | | ✓ |
+| Business dashboard and reports | | | ✓ |
+
+## Planned features
+
+### 1. Customer management (CRM)
+
+- Customer directory and contact details
+- Booking history and internal notes
+- Search and filter customers
+- Export customer records
+
+### 2. Advanced booking management
+
+- Day, week and month calendar views
+- Reschedule and cancel appointments
+- Configurable cancellation rules
+- Booking status management
+- Appointment buffers and blocked periods
+
+### 3. Automated communications
+
+- Booking confirmations and cancellations
+- Configurable appointment reminders
+- Custom email templates and studio branding
+- Notifications to the business owner
+
+### 4. Payments and deposits
+
+- Optional Stripe integration
+- Deposits or full payments
+- Payment status recorded against appointments
+- Manual payment recording for cash or bank transfer
+
+### 5. Business dashboard
+
+- Upcoming appointments and outstanding actions
+- Booking totals and cancellation rates
+- Revenue reporting where payment data is available
+- CSV exports for business records
+
+## What works today
+
+This branch runs as Fieldnote Basic: a responsive single-page studio site with a password-protected admin for homepage SEO settings, generated `robots.txt` and `sitemap.xml`, and a one-time command-line setup token. Appointment booking already exists in the separate Fieldnote Booking template.
 
 ## Requirements
 
@@ -20,32 +69,10 @@ Fieldnote Basic does not include appointment booking or calendar management.
 
 ## Run locally
 
-From the project directory, start PHP's built-in development server:
-
 ```sh
 php -S localhost:8000 router.php
 ```
 
-Open <http://localhost:8000> to view the site. Keep the server running while using the admin.
+Open <http://localhost:8000>. To create the admin account, run `php setup-token.php` in a second terminal, then enter the token at <http://localhost:8000/admin> and choose a unique password of at least 14 characters. For deployment, set `APP_STORAGE_PATH` to a private directory outside the public web root and enable HTTPS.
 
-## Create the admin account
-
-1. In a second terminal at the project directory, run:
-
-   ```sh
-   php setup-token.php
-   ```
-
-2. Open <http://localhost:8000/admin>, enter the one-time token printed by the command, and create an administrator account with a unique password of at least 14 characters.
-
-The setup token is deleted after the account is created. The default SQLite database is stored under the ignored `storage/` directory. For deployment, set `APP_STORAGE_PATH` to a private directory outside the public web root, enable HTTPS, and keep the database backed up.
-
-## SEO settings
-
-The site starts with search indexing disabled. Set the production canonical URL before enabling indexing. SEO fields are applied to the homepage when it is served by PHP; opening `preview.html` directly bypasses the backend and uses the static defaults.
-
-## Customize and deploy
-
-See [README-template.md](README-template.md) for detailed instructions on replacing the demo brand, copy, imagery, colors, and email address. Demo projects and text are fictional. Replace remote image assets with files you have permission to use before resale or production use.
-
-Review [LICENSE](LICENSE) before distributing the template. Fonts and other third-party assets may have separate terms.
+See [README-template.md](README-template.md) for customization and deployment notes, and review [LICENSE](LICENSE) before distributing the template.
