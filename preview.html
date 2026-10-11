@@ -4,9 +4,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#17231d">
-	<meta name="description" content="Fieldnote Basic is an independent creative studio for thoughtful brands and digital experiences.">
+	<meta name="description" content="Fieldnote Booking is a creative studio with simple online appointment booking.">
 	<meta name="template-seo" content="dynamic">
-	<title>Fieldnote Basic | Independent creative studio</title>
+	<title>Fieldnote Booking | Creative studio appointments</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,6 +34,7 @@
 		.site-header { position: absolute; inset: 0 0 auto; z-index: 2; display: flex; align-items: center; justify-content: space-between; width: min(100% - 3rem, 1240px); margin: auto; padding: 1.45rem 0; color: var(--white); }
 		.wordmark { display: flex; gap: .75rem; align-items: center; text-decoration: none; font: 600 .95rem/1.05 var(--display); letter-spacing: 0; }
 		.mark { display: grid; width: 2.4rem; aspect-ratio: 1; place-items: center; color: var(--ink); background: var(--lime); font: 700 1rem var(--display); }
+		.brand-logo { object-fit: contain; background: none; }
 		.nav-links { display: flex; gap: clamp(1rem, 3vw, 2.4rem); align-items: center; margin: 0; padding: 0; list-style: none; }
 		.nav-links a { text-decoration: none; font-size: .85rem; }
 		.nav-links a:hover, .nav-links a:focus-visible { color: var(--lime); }
@@ -62,10 +63,13 @@
 		.section-head h2 { margin: 0; font: 500 clamp(2.5rem, 5vw, 4.6rem)/1 var(--display); letter-spacing: 0; }
 		.section-head p { max-width: 330px; margin: 0; color: #49533a; }
 		.service-list { border-top: 1px solid rgba(23,35,29,.35); }
-		.service-row { display: grid; grid-template-columns: 4rem 1fr auto; gap: 1rem; align-items: center; min-height: 88px; border-bottom: 1px solid rgba(23,35,29,.35); }
+		.service-row { display: grid; grid-template-columns: 4rem 1fr auto; gap: 1rem; align-items: center; min-height: 88px; border-bottom: 1px solid rgba(23,35,29,.35); color: inherit; text-decoration: none; }
 		.service-row .number { color: #64723d; font-size: .78rem; }
-		.service-row h3 { margin: 0; font: 500 clamp(1.25rem, 2.5vw, 2rem)/1.15 var(--display); letter-spacing: 0; }
+		.service-copy strong { display: block; font: 500 clamp(1.1rem, 2.2vw, 1.8rem)/1.15 var(--display); }
+		.service-copy small { display: block; margin-top: .3rem; color: #58645a; font-size: .8rem; }
+		.service-row:hover .service-copy strong { color: #52662b; }
 		.service-row .plus { font: 400 1.7rem var(--display); }
+		.service-empty { padding: 1rem 0; color: var(--muted); }
 		.work { padding: clamp(5rem, 9vw, 8rem) max(1.5rem, calc((100vw - 1240px) / 2)); }
 		.work .section-head { align-items: start; margin-bottom: 2.5rem; }
 		.work .eyebrow { color: #a54736; }
@@ -87,6 +91,8 @@
 		.contact-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
 		.contact-aside p { max-width: 280px; margin: 0; color: rgba(255,255,255,.68); font-size: .9rem; }
 		.contact .button:hover, .contact .button:focus-visible { color: var(--white); }
+		.contact-email { color: rgba(255,255,255,.75); font-size: .85rem; }
+		.contact-email:hover, .contact-email:focus-visible { color: var(--lime); }
 		.site-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.3rem max(1.5rem, calc((100vw - 1240px) / 2)); color: rgba(255,255,255,.65); background: #111a15; font-size: .75rem; }
 		.site-footer p { margin: 0; }
 		.site-footer a { color: var(--lime); text-decoration: none; }
@@ -121,83 +127,82 @@
 			*, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 		}
 	</style>
+	[[brand:favicon]]
 </head>
 <body>
 	<a class="skip-link" href="#main">Skip to content</a>
 	<header class="site-header">
-		<a class="wordmark" href="#top" aria-label="Fieldnote Basic home">
-			<span class="mark" aria-hidden="true">F/</span>
-			<span>Fieldnote<br>Basic</span>
+		<a class="wordmark" href="#top" aria-label="[[page:brand_line_1]] [[page:brand_line_2]] home">
+			[[brand:mark]]
+			<span>[[page:brand_line_1]]<br>[[page:brand_line_2]]</span>
 		</a>
 		<nav aria-label="Main navigation">
 			<ul class="nav-links">
 				<li><a href="#services">Services</a></li>
 				<li><a href="#work">Selected work</a></li>
-				<li><a class="nav-contact" href="#contact">Start a project <span aria-hidden="true">↗</span></a></li>
+				<li><a class="nav-contact" href="/book">Book a session <span aria-hidden="true">↗</span></a></li>
 			</ul>
 		</nav>
 	</header>
 	<main id="main">
 		<section class="hero" id="top" aria-labelledby="hero-title">
-			<img class="hero-image" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=2200&q=85" alt="Creative workspace with a laptop and web design in progress">
+			<img class="hero-image" src="[[page:hero_image]]" alt="Creative workspace with a laptop and web design in progress">
 			<div class="hero-inner">
-				<p class="eyebrow">Independent creative studio</p>
-				<h1 id="hero-title">Make a mark.<br><span>Mean it.</span></h1>
-				<p class="hero-copy">We build thoughtful brands and digital experiences for people doing things differently.</p>
-				<a class="button" href="#work">Explore the work <span class="arrow" aria-hidden="true">↘</span></a>
+				<p class="eyebrow">[[page:hero_eyebrow]]</p>
+				<h1 id="hero-title">[[page:hero_title_1]]<br><span>[[page:hero_title_2]]</span></h1>
+				<p class="hero-copy">[[page:hero_description]]</p>
+				<a class="button" href="/book">[[page:hero_button]] <span class="arrow" aria-hidden="true">↘</span></a>
 			</div>
 			<div class="hero-foot"><span>Independent by nature</span><span>Strategy&nbsp;&nbsp; / &nbsp;&nbsp;Identity&nbsp;&nbsp; / &nbsp;&nbsp;Digital</span></div>
 		</section>
 		<section class="intro" aria-labelledby="intro-title">
-			<p class="eyebrow">A connected approach</p>
+			<p class="eyebrow">[[page:intro_eyebrow]]</p>
 			<div>
-				<h2 id="intro-title">Clear thinking. <em>Good feeling.</em></h2>
-				<p>We partner with ambitious people to turn a little spark into a brand with purpose, a website with character and a story worth sharing.</p>
+				<h2 id="intro-title">[[page:intro_title_1]] <em>[[page:intro_title_2]]</em></h2>
+				<p>[[page:intro_description]]</p>
 			</div>
 		</section>
 		<section class="services" id="services" aria-labelledby="services-title">
 			<div class="section-head">
-				<h2 id="services-title">What we do</h2>
-				<p>Small, considered teams. Work that feels like you, only clearer.</p>
+				<h2 id="services-title">[[page:services_title]]</h2>
+				<p>[[page:services_description]]</p>
 			</div>
 			<div class="service-list">
-				<div class="service-row"><span class="number">01</span><h3>Brand strategy &amp; identity</h3><span class="plus" aria-hidden="true">↗</span></div>
-				<div class="service-row"><span class="number">02</span><h3>Websites &amp; digital experiences</h3><span class="plus" aria-hidden="true">↗</span></div>
-				<div class="service-row"><span class="number">03</span><h3>Campaigns &amp; art direction</h3><span class="plus" aria-hidden="true">↗</span></div>
-				<div class="service-row"><span class="number">04</span><h3>Packaging &amp; print</h3><span class="plus" aria-hidden="true">↗</span></div>
+				<!--DYNAMIC_BOOKING_SERVICES-->
 			</div>
 		</section>
 		<section class="work" id="work" aria-labelledby="work-title">
 			<div class="section-head">
-				<div><p class="eyebrow">A few good things</p><h2 id="work-title">Selected work</h2></div>
-				<p>A couple of sample projects to show how your work could take centre stage.</p>
+				<div><p class="eyebrow">[[page:projects_eyebrow]]</p><h2 id="work-title">[[page:projects_title]]</h2></div>
+				<p>[[page:projects_description]]</p>
 			</div>
 			<div class="work-grid">
 				<article class="project">
-					<div class="project-image"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=85" alt="Minimal skincare bottles arranged against a warm background" loading="lazy"></div>
-					<div class="project-meta"><div><h3>Goodwell Botanics</h3><p>Sample project · Brand &amp; packaging</p></div><span class="project-arrow" aria-hidden="true">↗</span></div>
+					<div class="project-image"><img src="[[page:project_1_image]]" alt="[[page:project_1_title]] project" loading="lazy"></div>
+					<div class="project-meta"><div><h3>[[page:project_1_title]]</h3><p>[[page:project_1_caption]]</p></div><span class="project-arrow" aria-hidden="true">↗</span></div>
 				</article>
 				<article class="project">
-					<div class="project-image"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=85" alt="Sunlit independent cafe with a welcoming counter" loading="lazy"></div>
-					<div class="project-meta"><div><h3>Sunday Standard</h3><p>Sample project · Identity &amp; website</p></div><span class="project-arrow" aria-hidden="true">↗</span></div>
+					<div class="project-image"><img src="[[page:project_2_image]]" alt="[[page:project_2_title]] project" loading="lazy"></div>
+					<div class="project-meta"><div><h3>[[page:project_2_title]]</h3><p>[[page:project_2_caption]]</p></div><span class="project-arrow" aria-hidden="true">↗</span></div>
 				</article>
 			</div>
 		</section>
 		<section class="contact" id="contact" aria-labelledby="contact-title">
 			<div>
-				<p class="eyebrow">Have a good one?</p>
-				<h2 id="contact-title">Let's make it <span>real.</span></h2>
-				<p class="contact-note">Tell us what you're building. We'll take it from there.</p>
+				<p class="eyebrow">[[page:contact_eyebrow]]</p>
+				<h2 id="contact-title">[[page:contact_title_1]] <span>[[page:contact_title_2]]</span></h2>
+				<p class="contact-note">[[page:contact_description]]</p>
 			</div>
 			<div class="contact-aside">
 				<p>Tell us a little about what you have in mind and we'll get back to you.</p>
-				<a class="button" href="mailto:hello@example.com">Start a conversation <span class="arrow" aria-hidden="true">↗</span></a>
+				<a class="button" href="/book">[[page:contact_button]] <span class="arrow" aria-hidden="true">↗</span></a>
+				<a class="contact-email" href="mailto:[[page:contact_email]]">Or email [[page:contact_email]]</a>
 			</div>
 		</section>
 	</main>
 	<footer class="site-footer">
-		<p>© 2026 Fieldnote Basic</p>
-		<p>Independent creative studio · <a href="#top">Back to top ↑</a></p>
+		<p>© 2026 [[page:brand_line_1]] [[page:brand_line_2]] · Powered by <a href="https://ddnetwork.co.uk" target="_blank" rel="noopener noreferrer">DD Network</a></p>
+		<p>[[page:footer_label]] · <a href="/admin">Manager login</a> · <a href="#top">Back to top ↑</a></p>
 	</footer>
 </body>
 </html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex, nofollow">
+	<meta name="booking-csrf" content="{{BOOKING_CSRF}}">
+	<meta name="booking-timezone" content="{{BOOKING_TIMEZONE}}">
+	<title>Book a session | Fieldnote Booking</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+	{{BRAND_FAVICON}}
+	<link rel="stylesheet" href="/booking.css">
+	<script src="/booking.js" defer></script>
+</head>
+<body>
+	<a class="skip-link" href="#main">Skip to booking</a>
+	<header class="booking-header">
+		<a class="booking-brand" href="/" aria-label="Fieldnote Booking home">{{BRAND_MARK}}<span>Fieldnote<br>Booking</span></a>
+		<a class="back-link" href="/">Back to studio <span aria-hidden="true">↗</span></a>
+	</header>
+	<main id="main" class="booking-main">
+		<div class="booking-heading"><p class="eyebrow">Make some time</p><h1>Book a session.</h1><p>Choose a service, a date and a time. Your appointment will be confirmed straight away.</p></div>
+		<div id="booking-message" class="booking-message" role="status" aria-live="polite"></div>
+		<div id="booking-unavailable" class="booking-unavailable" hidden>Online booking is currently unavailable. Please contact the studio.</div>
+		<div id="booking-workflow" class="booking-workflow">
+			<section class="calendar-panel" aria-labelledby="calendar-label">
+				<label class="field-label" for="service-select">Choose a session</label>
+				<select id="service-select" class="service-select" required><option value="">Loading sessions…</option></select>
+				<p id="service-description" class="service-description"></p>
+				<div class="calendar-toolbar">
+					<h2 id="calendar-label" aria-live="polite"></h2>
+					<div class="month-controls"><button id="previous-month" class="icon-button" type="button" aria-label="Previous month">←</button><button id="next-month" class="icon-button" type="button" aria-label="Next month">→</button></div>
+				</div>
+				<div class="calendar-grid calendar-weekdays" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+				<div id="calendar-days" class="calendar-grid" role="group" aria-label="Choose a date"></div>
+				<p class="timezone-note">Times shown in <strong id="timezone-name">{{BOOKING_TIMEZONE}}</strong></p>
+			</section>
+			<section class="times-panel" aria-labelledby="times-title">
+				<p class="eyebrow">Choose a time</p>
+				<h2 id="times-title">Select a date first</h2>
+				<div id="time-slots" class="time-slots" aria-live="polite"><p class="empty-state">Available times will appear here.</p></div>
+			</section>
+		</div>
+		<section id="customer-panel" class="customer-panel" aria-labelledby="details-title" hidden>
+			<div class="customer-heading"><p class="eyebrow">Almost there</p><h2 id="details-title">Your details</h2><p id="appointment-summary"></p></div>
+			<form id="booking-form" class="booking-form" novalidate>
+				<div class="customer-fields">
+					<label class="field-label">Your name<input name="name" autocomplete="name" minlength="2" maxlength="100" required></label>
+					<label class="field-label">Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+					<label class="field-label">Phone <span class="optional">Optional</span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
+					<label class="field-label field-wide">Anything we should know? <span class="optional">Optional</span><textarea name="note" rows="3" maxlength="1000"></textarea></label>
+					<label class="honeypot" aria-hidden="true" tabindex="-1">Leave this field empty<input name="website" tabindex="-1" autocomplete="off"></label>
+				</div>
+				<div class="submit-row"><p>Submitting confirms your appointment. No payment is collected online.</p><button id="submit-booking" class="primary-button" type="submit">Confirm appointment <span aria-hidden="true">↗</span></button></div>
+			</form>
+		</section>
+		<section id="booking-confirmation" class="booking-confirmation" aria-live="polite" tabindex="-1" hidden>
+			<p class="eyebrow">You are all set</p><h2>Session confirmed.</h2><p id="confirmation-summary"></p><p class="reference-line">Reference <strong id="confirmation-reference"></strong></p><a id="calendar-download" class="outline-button" download="fieldnote-booking.ics">Add to calendar <span aria-hidden="true">↓</span></a>
+		</section>
+	</main>
+	<footer class="booking-footer"><span>Fieldnote Booking · <a href="https://ddnetwork.co.uk" target="_blank" rel="noopener noreferrer">Powered by DD Network</a></span><span>Appointment times use the studio's local timezone. · <a href="/admin">Manager login</a></span></footer>
+</body>
+</html>

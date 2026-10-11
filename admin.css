@@ -20,6 +20,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .admin-brand { display: flex; gap: .75rem; align-items: center; color: inherit; font: 600 .95rem/1.1 var(--display); text-decoration: none; }
 .admin-brand small { display: block; margin-top: .25rem; color: #b8c0b9; font: 400 .72rem var(--body); }
 .admin-mark { display: grid; width: 2.4rem; aspect-ratio: 1; place-items: center; color: var(--ink); background: var(--lime); font: 700 1rem var(--display); }
+.brand-logo { object-fit: contain; background: none; }
 .admin-account { display: flex; gap: 1.25rem; align-items: center; color: #dce0d7; font-size: .85rem; }
 .admin-account form { margin: 0; }
 .text-button { padding: .4rem 0; border: 0; color: var(--lime); background: none; cursor: pointer; }
@@ -71,6 +72,76 @@ h2 { margin: 0 0 .2rem; font: 600 1.15rem var(--display); letter-spacing: 0; }
 .field-stack { display: grid; gap: 1rem; margin-top: 1.5rem; }
 .field-stack label { display: grid; gap: .4rem; font-size: .86rem; font-weight: 600; }
 .field-stack .primary-button { width: 100%; margin-top: .3rem; }
+.admin-nav { display: flex; gap: .25rem; padding: 0 max(1.25rem, calc((100vw - 1120px) / 2)); overflow-x: auto; border-bottom: 1px solid var(--line); background: var(--white); }
+.admin-nav a { flex: 0 0 auto; padding: .9rem 1rem; color: #59645c; font-size: .83rem; text-decoration: none; }
+.admin-nav a[aria-current="page"] { border-bottom: 2px solid #53672b; color: var(--ink); font-weight: 700; }
+.admin-nav a:hover, .admin-nav a:focus-visible { color: var(--ink); background: #f2f5e8; }
+.booking-admin-main { max-width: 1040px; }
+.admin-section-heading, .calendar-admin-toolbar, .day-bookings-heading { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1rem; }
+.admin-section-heading p, .calendar-admin-toolbar p { margin: .25rem 0 0; color: var(--muted); font-size: .84rem; }
+.service-admin-list { border-top: 1px solid var(--line); }
+.service-admin-form { padding: 1.35rem 0 .6rem; border-bottom: 1px solid var(--line); }
+.service-actions { display: flex; align-items: center; gap: 1rem; }
+.service-status { color: var(--muted); font-size: .78rem; }
+.service-status.is-active { color: #45591f; }
+.inline-action { margin: -.1rem 0 .9rem; text-align: right; }
+.text-action { padding: .3rem .2rem; border: 0; color: #566c2b; background: transparent; font-size: .8rem; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.text-action:hover, .text-action:focus-visible { color: #923d2d; }
+.admin-panel { margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--line); background: var(--white); }
+.admin-panel > p { color: var(--muted); font-size: .86rem; }
+.admin-panel .form-grid { margin-top: 1rem; }
+.admin-panel .form-actions { grid-column: 1 / -1; padding: .5rem 0 0; }
+.booking-enable { margin-top: 1.35rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.weekly-hours { border-top: 1px solid var(--line); }
+.weekly-row { display: grid; grid-template-columns: minmax(130px, 1fr) minmax(100px, .8fr) 2rem minmax(100px, .8fr); gap: .8rem; align-items: center; min-height: 58px; border-bottom: 1px solid var(--line); }
+.day-check { display: flex; gap: .55rem; align-items: center; font-size: .85rem; font-weight: 600; }
+.day-check input { width: 1rem; height: 1rem; accent-color: #52672a; }
+.time-field input, .exception-form input, .status-form select, .reschedule-form input, .reschedule-form select { width: 100%; min-height: 2.4rem; padding: .4rem .55rem; border: 1px solid #cbd1c9; color: var(--ink); background: #fff; }
+.time-field input:focus, .exception-form input:focus, .status-form select:focus, .reschedule-form input:focus, .reschedule-form select:focus { outline: 2px solid #839a3e; outline-offset: 1px; }
+.time-separator { color: var(--muted); font-size: .75rem; text-align: center; }
+.exception-form { align-items: end; margin: 1rem 0 1.5rem; }
+.exception-check { min-height: 2.4rem; }
+.exception-form .form-actions { padding: .25rem 0; }
+.exception-list { border-top: 1px solid var(--line); }
+.exception-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: center; padding: .8rem 0; border-bottom: 1px solid var(--line); font-size: .84rem; }
+.exception-row small { display: block; color: var(--muted); }
+.exception-row form { margin: 0; }
+.empty-admin { padding: 1.3rem; color: var(--muted); background: var(--white); }
+.calendar-admin-toolbar { align-items: center; margin: 1.7rem 0 .8rem; }
+.calendar-admin-toolbar h2 { margin: 0; font: 500 1.5rem var(--display); }
+.admin-calendar { border: 1px solid var(--line); background: var(--white); }
+.admin-calendar-weekdays, .admin-calendar-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.admin-calendar-weekdays span { padding: .6rem .4rem; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .72rem; font-weight: 700; text-align: center; }
+.admin-calendar-day, .admin-calendar-blank { min-width: 0; min-height: 76px; padding: .55rem; border-right: 1px solid #e9ece6; border-bottom: 1px solid #e9ece6; }
+.admin-calendar-day { color: var(--ink); background: #fff; font-size: .84rem; text-decoration: none; }
+.admin-calendar-day:hover, .admin-calendar-day:focus-visible { background: #f3f6e9; }
+.admin-calendar-day.is-selected { outline: 2px solid #53672b; outline-offset: -2px; background: #f1f5e3; }
+.admin-calendar-day.is-today > span { display: inline-grid; width: 1.5rem; aspect-ratio: 1; place-items: center; border-radius: 50%; color: var(--white); background: var(--ink); }
+.admin-calendar-day small { display: block; margin-top: .4rem; color: #52672a; font-size: .67rem; }
+.day-bookings-heading { align-items: end; margin: 2rem 0 .8rem; }
+.day-bookings-heading .eyebrow { margin-bottom: .3rem; }
+.day-bookings-heading h2 { margin: 0; font: 500 1.7rem var(--display); }
+.day-bookings-heading > span { color: var(--muted); font-size: .8rem; }
+.appointment-list { border-top: 1px solid var(--line); }
+.appointment-item { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 1.2rem; padding: 1.2rem .2rem; border-bottom: 1px solid var(--line); }
+.appointment-time strong, .appointment-time span { display: block; }
+.appointment-time strong { font: 600 1.15rem var(--display); }
+.appointment-time span { color: var(--muted); font-size: .72rem; }
+.appointment-title { display: flex; flex-wrap: wrap; gap: .65rem; align-items: center; }
+.appointment-title h3 { margin: 0; font: 600 1.05rem var(--display); }
+.appointment-details > p { margin: .35rem 0 0; color: var(--muted); font-size: .82rem; overflow-wrap: anywhere; }
+.appointment-details > p a { color: #465c24; }
+.appointment-details .customer-note { color: var(--ink); white-space: normal; }
+.status-pill { display: inline-block; padding: .16rem .42rem; color: #445820; background: #eaf1d7; font-size: .68rem; text-transform: capitalize; }
+.status-cancelled, .status-no_show { color: #853e2e; background: #f8e8e1; }
+.status-completed { color: #345a54; background: #e0efea; }
+.appointment-actions { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; margin-top: .8rem; }
+.status-form, .reschedule-form { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 0; }
+.status-form select { width: auto; min-width: 125px; }
+.reschedule-form input, .reschedule-form select { width: auto; min-width: 145px; }
+.editor-help { margin: 1rem 0 0; color: var(--muted); font-size: .82rem; }
+.editor-help a { color: #465c24; font-weight: 600; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (max-width: 640px) {
 	.admin-topbar { min-height: 66px; padding: 0 1rem; }
 	.admin-account { gap: .6rem; font-size: .76rem; }
@@ -83,4 +154,19 @@ h2 { margin: 0 0 .2rem; font: 600 1.15rem var(--display); letter-spacing: 0; }
 	.form-actions .primary-button { width: 100%; }
 	.toggle-row { gap: .8rem; }
 	.auth-panel { padding: 1.4rem; }
+	.admin-nav { padding: 0 .4rem; }
+	.admin-nav a { padding: .8rem .65rem; }
+	.admin-panel { padding: 1rem; }
+	.weekly-row { grid-template-columns: minmax(90px, 1fr) minmax(92px, .8fr) 1rem minmax(92px, .8fr); gap: .35rem; }
+	.day-check { font-size: .76rem; }
+	.exception-row { grid-template-columns: 1fr auto; }
+	.exception-row > span:nth-child(2) { grid-column: 1; }
+	.exception-row form { grid-column: 2; grid-row: 1 / span 2; }
+	.admin-calendar-day, .admin-calendar-blank { min-height: 56px; padding: .35rem .25rem; }
+	.admin-calendar-day small { font-size: .58rem; }
+	.appointment-item { grid-template-columns: 1fr; gap: .55rem; }
+	.appointment-actions { align-items: flex-start; flex-direction: column; }
+	.reschedule-form, .status-form { width: 100%; }
+	.reschedule-form label, .reschedule-form input, .reschedule-form select { flex: 1 1 100%; width: 100%; }
+	.service-actions { align-items: flex-start; flex-direction: column; }
 }

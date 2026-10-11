@@ -9,7 +9,7 @@ if (str_starts_with($path, '/storage/') || str_starts_with($path, '/.')) {
 	exit;
 }
 
-$routes = ['/', '/index.php', '/preview.html', '/admin', '/robots.txt', '/sitemap.xml'];
+$routes = ['/','/index.php','/preview.html','/admin','/admin/pages','/admin/bookings','/admin/services','/admin/availability','/book','/api/services','/api/calendar','/api/slots','/api/bookings','/api/admin/slots','/api/admin/bookings','/robots.txt','/sitemap.xml','/favicon.ico','/brand/favicon','/brand/logo'];
 if (!in_array($route, $routes, true)) {
 	$requested = realpath(__DIR__ . $path);
 	if ($requested && str_starts_with($requested, __DIR__ . DIRECTORY_SEPARATOR) && is_file($requested)) {
@@ -25,6 +25,12 @@ header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 header('X-Frame-Options: DENY');
 
+require __DIR__ . '/booking.php';
+
+if (str_starts_with($route, '/api/')) {
+	booking_api_dispatch(app_db(), $route);
+}
+
 if ($route === '/admin') {
 	require __DIR__ . '/admin.php';
 	exit;
@@ -32,6 +38,38 @@ if ($route === '/admin') {
 
 $db = app_db();
 $settings = setting_values($db);
+
+if ($route === '/admin/pages') {
+	require __DIR__ . '/page-editor.php';
+	exit;
+}
+if (in_array($route, ['/admin/bookings', '/admin/services', '/admin/availability'], true)) {
+	require __DIR__ . '/booking-admin.php';
+	exit;
+}
+if ($route === '/book') {
+	require __DIR__ . '/booking-page.php';
+	exit;
+}
+
+if (in_array($route, ['/favicon.ico', '/brand/favicon', '/brand/logo'], true)) {
+	$kind = $route === '/brand/logo' ? 'logo' : 'favicon';
+	$name = branding_file($settings, $kind);
+	if ($name === '') {
+		if ($kind === 'favicon') {
+			header('Location: /favicon.svg', true, 302);
+		} else {
+			http_response_code(404);
+		}
+		exit;
+	}
+	$types = ['png' => 'image/png', 'jpg' => 'image/jpeg', 'webp' => 'image/webp', 'ico' => 'image/x-icon'];
+	header('Content-Type: ' . $types[pathinfo($name, PATHINFO_EXTENSION)]);
+	header('Cache-Control: public, max-age=86400');
+	header('Content-Security-Policy: default-src \'none\'; sandbox');
+	readfile(branding_dir() . '/' . $name);
+	exit;
+}
 
 if ($route === '/robots.txt') {
 	header('Content-Type: text/plain; charset=utf-8');
@@ -78,6 +116,28 @@ if ($settings['canonical_url'] !== '') {
 	$meta .= '<link rel="canonical" href="' . h($settings['canonical_url']) . '">' . "\n";
 }
 $html = str_replace('<meta name="template-seo" content="dynamic">', $meta, $html);
+$html = str_replace('[[brand:favicon]]', branding_head($settings), $html);
+$html = str_replace('[[brand:mark]]', branding_mark($settings, 'mark'), $html);
+
+$content = $db->query('SELECT content_key, content_value FROM page_content')->fetchAll(PDO::FETCH_KEY_PAIR);
+foreach ($content as $key => $value) {
+	$html = str_replace('[[page:' . $key . ']]', h((string) $value), $html);
+}
+$services = $db->query('SELECT id, name, description, duration_minutes, buffer_minutes FROM services WHERE active = 1 ORDER BY sort_order, name')->fetchAll(PDO::FETCH_ASSOC);
+$serviceRows = '';
+foreach ($services as $index => $service) {
+	$number = str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT);
+	$details = trim((string) $service['description']);
+	$details .= ($details !== '' ? ' · ' : '') . (int) $service['duration_minutes'] . ' minutes';
+	if ((int) $service['buffer_minutes'] > 0) {
+		$details .= ' · ' . (int) $service['buffer_minutes'] . ' minute buffer';
+	}
+	$serviceRows .= '<a class="service-row" href="/book?service_id=' . (int) $service['id'] . '"><span class="number">' . $number . '</span><span class="service-copy"><strong>' . h((string) $service['name']) . '</strong><small>' . h($details) . '</small></span><span class="plus" aria-hidden="true">↗</span></a>';
+}
+if ($serviceRows === '') {
+	$serviceRows = '<p class="service-empty">Online sessions are currently unavailable. Please contact us directly.</p>';
+}
+$html = str_replace('<!--DYNAMIC_BOOKING_SERVICES-->', $serviceRows, $html);
 echo $html;
 
 function site_origin(array $settings): string

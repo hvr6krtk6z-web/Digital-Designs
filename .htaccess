@@ -1,4 +1,4 @@
 Options -Indexes
 RewriteEngine On
 RewriteRule ^storage/ - [F,L]
-RewriteRule ^(?:admin|robots\.txt|sitemap\.xml|preview\.html|index\.php)?$ router.php [QSA,L]
+RewriteRule ^(?:api/.*|admin(?:/.*)?|book/?|robots\.txt|sitemap\.xml|favicon\.ico|brand/(?:favicon|logo)|preview\.html|index\.php)?$ router.php [QSA,L]

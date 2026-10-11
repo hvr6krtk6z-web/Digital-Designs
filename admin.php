@@ -74,6 +74,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			}
 		}
 
+		if (in_array($action, ['branding_favicon', 'branding_logo'], true) && !empty($_SESSION['admin_id'])) {
+			$kind = substr($action, 9);
+			$label = $kind === 'favicon' ? 'Favicon' : 'Logo';
+			$file = $_FILES[$kind] ?? ['error' => UPLOAD_ERR_NO_FILE];
+			if (isset($_POST['remove'])) {
+				branding_remove($db, $kind);
+				$notice = $label . ' removed. The default is now in use.';
+			} elseif ($error = branding_save_upload($db, $kind, $file)) {
+				$errors[] = $error;
+			} elseif ($file['error'] === UPLOAD_ERR_OK) {
+				$notice = $label . ' updated.';
+			} else {
+				$errors[] = 'Choose a ' . strtolower($label) . ' file to upload.';
+			}
+		}
+
 		if ($action === 'save' && !empty($_SESSION['admin_id'])) {
 			$values = [
 				'title' => trim((string) ($_POST['title'] ?? '')),
@@ -125,16 +141,26 @@ $csrf = csrf_token();
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="noindex, nofollow">
-	<title>SEO Manager | Fieldnote Basic</title>
+	<title>Fieldnote Booking | Site Admin</title>
 	<link rel="stylesheet" href="/admin.css">
+	<?= branding_head($settings) ?>
 </head>
 <body class="admin-page">
 	<header class="admin-topbar">
-		<a class="admin-brand" href="/" target="_blank" rel="noreferrer"><span class="admin-mark">F/</span><span>Fieldnote Basic <small>Site admin</small></span></a>
+		<a class="admin-brand" href="/" target="_blank" rel="noreferrer"><?= branding_mark($settings, 'admin-mark') ?><span>Fieldnote Booking <small>Site admin</small></span></a>
 		<?php if ($isLoggedIn): ?>
 			<div class="admin-account"><span><?= h((string) $_SESSION['admin_username']) ?></span><form method="post"><input type="hidden" name="csrf_token" value="<?= h($csrf) ?>"><button class="text-button" name="action" value="logout">Sign out</button></form></div>
 		<?php endif; ?>
 	</header>
+	<?php if ($isLoggedIn): ?>
+	<nav class="admin-nav" aria-label="Admin sections">
+		<a href="/admin" aria-current="page">SEO manager</a>
+		<a href="/admin/bookings">Appointments</a>
+		<a href="/admin/availability">Availability</a>
+		<a href="/admin/services">Services</a>
+		<a href="/admin/pages">Page editor</a>
+	</nav>
+	<?php endif; ?>
 	<main class="admin-main">
 		<?php if (!$adminCount): ?>
 			<section class="auth-panel">
@@ -197,6 +223,22 @@ $csrf = csrf_token();
 				</section>
 				<div class="form-actions"><span class="save-note">Changes are saved to the local SQLite database.</span><button class="primary-button" type="submit">Save SEO settings</button></div>
 			</form>
+			<?php foreach (['favicon' => ['04', 'Favicon', 'Shown in browser tabs and bookmarks. PNG, JPG, WebP or ICO, up to 512 KB. Square images work best.', '.png,.jpg,.jpeg,.webp,.ico'], 'logo' => ['05', 'Logo', 'Replaces the "F/" mark in the site header, booking page and admin. PNG, JPG or WebP, up to 1 MB. Square images work best.', '.png,.jpg,.jpeg,.webp']] as $kind => [$number, $label, $hint, $accept]): ?>
+			<form method="post" enctype="multipart/form-data" class="settings-form">
+				<input type="hidden" name="csrf_token" value="<?= h($csrf) ?>">
+				<input type="hidden" name="action" value="branding_<?= h($kind) ?>">
+				<section class="settings-section">
+					<div class="section-title"><span class="section-icon"><?= h($number) ?></span><div><h2><?= h($label) ?></h2><p><?= h($hint) ?></p></div></div>
+					<div class="form-grid">
+						<div class="field">
+							<?php if ($kind === 'favicon' || branding_file($settings, 'logo') !== ''): ?><img src="<?= h(branding_url($settings, $kind)) ?>" alt="Current <?= h(strtolower($label)) ?>" width="48" height="48" style="object-fit:contain;margin:.4rem 0"><?php endif; ?>
+							<input type="file" name="<?= h($kind) ?>" accept="<?= h($accept) ?>" aria-label="Upload <?= h(strtolower($label)) ?>">
+						</div>
+					</div>
+				</section>
+				<div class="form-actions"><span class="save-note"><?= branding_file($settings, $kind) !== '' ? 'A custom ' . h(strtolower($label)) . ' is in use.' : 'The default ' . h(strtolower($label)) . ' is in use.' ?></span><span><?php if (branding_file($settings, $kind) !== ''): ?><button class="outline-button" type="submit" name="remove" value="1" formnovalidate>Remove</button> <?php endif; ?><button class="primary-button" type="submit">Upload <?= h(strtolower($label)) ?></button></span></div>
+			</form>
+			<?php endforeach; ?>
 		<?php endif; ?>
 	</main>
 	<script src="/admin.js" defer></script>
